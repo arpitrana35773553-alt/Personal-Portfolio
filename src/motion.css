@@ -1,3 +1,367 @@
-:root{--pointer-x:.5;--pointer-y:.5}.ambient{background:radial-gradient(circle at calc(var(--pointer-x)*100%) calc(var(--pointer-y)*100%),color-mix(in srgb,var(--cyan) 14%,transparent),transparent 22rem),radial-gradient(circle at 8% 54%,color-mix(in srgb,var(--accent) 10%,transparent),transparent 34rem),linear-gradient(120deg,transparent 50%,color-mix(in srgb,var(--cyan) 4%,transparent));transition:background .55s ease;position:fixed;inset:0;z-index:-1}.ambient::before{content:"";position:absolute;inset:0;opacity:.16;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 1px,transparent 1px,transparent 24px),repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 1px,transparent 1px,transparent 24px);mix-blend-mode:screen}.ambient::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.4;background-image:radial-gradient(circle at 16% 12%,rgba(255,255,255,.35) .18rem,transparent .28rem),radial-gradient(circle at 72% 24%,rgba(255,255,255,.27) .16rem,transparent .26rem),radial-gradient(circle at 45% 80%,rgba(255,255,255,.22) .14rem,transparent .24rem),radial-gradient(circle at 88% 68%,rgba(255,255,255,.18) .12rem,transparent .22rem);filter:blur(1px);mix-blend-mode:screen;animation:blueprint-pulse 18s ease-in-out infinite}.navbar nav a.active{color:var(--fg);background:color-mix(in srgb,var(--accent) 14%,transparent)}.hero-copy{animation:hero-in .9s cubic-bezier(.22,1,.36,1) both}.hero-orbit{opacity:0;animation:hero-in .9s cubic-bezier(.22,1,.36,1) both, orbit-float 7s ease-in-out infinite .95s;transform:translate(calc((var(--pointer-x) - .5)*-18px),calc((var(--pointer-y) - .5)*-18px));transition:transform .65s cubic-bezier(.22,1,.36,1)}.orb-core{animation:core-breathe 4s ease-in-out infinite}.orbit-node{animation:node-pulse 3.2s ease-in-out infinite}.orbit-node.cse{animation-delay:-1.1s}.orbit-node.cyber{animation-delay:-2.2s}.beam{animation:beam-sweep 5s linear infinite}.b2{animation-delay:-2.5s}.hero-foot{animation:scroll-nudge 1.6s ease-in-out infinite}.glass-panel{position:relative;overflow:hidden}.glass-panel:before{content:"";position:absolute;inset:-70% -35%;pointer-events:none;background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.14) 49%,transparent 56%);transform:translateX(-65%) rotate(8deg);transition:transform .8s ease}.glass-panel:hover:before{transform:translateX(65%) rotate(8deg)}.project-card,.skills-grid .glass-panel,.roadmap .glass-panel,.social-card{animation:panel-settle .65s cubic-bezier(.22,1,.36,1) both}.project-card:nth-child(2),.skills-grid .glass-panel:nth-child(2),.roadmap .glass-panel:nth-child(2){animation-delay:.09s}.project-card:nth-child(3),.skills-grid .glass-panel:nth-child(3),.roadmap .glass-panel:nth-child(3){animation-delay:.18s}.project-card:nth-child(4),.skills-grid .glass-panel:nth-child(4){animation-delay:.27s}.reveal-on-scroll{opacity:0;transform:translateY(36px);filter:blur(10px);transition:opacity .75s cubic-bezier(.22,1,.36,1),transform .75s cubic-bezier(.22,1,.36,1),filter .75s ease}.reveal-on-scroll.is-visible{opacity:1;transform:translateY(0);filter:blur(0)}.status i{animation:status-pulse 2s ease-in-out infinite}.filters button{transition:transform .2s,background .2s,color .2s}.filters button:hover{transform:translateY(-2px)}@keyframes hero-in{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}@keyframes orbit-float{50%{margin-top:-12px}}@keyframes core-breathe{50%{box-shadow:inset 0 1px color-mix(in srgb,var(--fg) 34%,transparent),0 0 84px color-mix(in srgb,var(--accent) 26%,transparent);transform:translate(-50%,-50%) scale(1.035)}}@keyframes node-pulse{50%{box-shadow:0 0 22px color-mix(in srgb,var(--cyan) 28%,transparent);border-color:var(--cyan)}}@keyframes beam-sweep{to{transform:rotate(365deg)}}@keyframes scroll-nudge{50%{transform:translateY(5px);color:var(--accent)}}@keyframes panel-settle{from{opacity:0;transform:translateY(17px) scale(.985)}to{opacity:1;transform:none}}@keyframes status-pulse{50%{box-shadow:0 0 10px var(--accent);transform:scale(1.4)}}@media(max-width:800px){.hero-orbit{transform:scale(.85)}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal-on-scroll{opacity:1;transform:none}}
-/* Paragraph interaction: a quiet, readable liquid-light response */
-.about-copy p,.project-card p:not(.tag),.ai-direction>div>p,.roadmap p,.contact-layout>p,.modal p:not(.eyebrow){position:relative;cursor:default;transition:color .28s ease,transform .32s cubic-bezier(.22,1,.36,1),text-shadow .32s ease}.about-copy p:hover,.project-card p:not(.tag):hover,.ai-direction>div>p:hover,.roadmap p:hover,.contact-layout>p:hover,.modal p:not(.eyebrow):hover{color:var(--fg);transform:translateX(7px);text-shadow:0 0 20px color-mix(in srgb,var(--cyan) 23%,transparent)}.about-copy p:hover:before,.project-card p:not(.tag):hover:before,.ai-direction>div>p:hover:before,.roadmap p:hover:before,.contact-layout>p:hover:before,.modal p:not(.eyebrow):hover:before{content:"";position:absolute;left:-11px;top:.25em;bottom:.25em;width:2px;border-radius:3px;background:linear-gradient(var(--cyan),var(--accent));box-shadow:0 0 12px var(--cyan);animation:text-marker .32s cubic-bezier(.22,1,.36,1) both}@keyframes text-marker{from{opacity:0;transform:scaleY(.2)}to{opacity:1;transform:scaleY(1)}}@keyframes blueprint-pulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.55;transform:scale(1.02)}}
+:root {
+  --pointer-x: 0.5;
+  --pointer-y: 0.5;
+}
+
+/* Ambient Background Blueprint */
+.ambient {
+  background: 
+    radial-gradient(circle at calc(var(--pointer-x) * 100%) calc(var(--pointer-y) * 100%), color-mix(in srgb, var(--cyan) 16%, transparent), transparent 24rem),
+    radial-gradient(circle at 8% 54%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 36rem),
+    linear-gradient(120deg, transparent 50%, color-mix(in srgb, var(--cyan) 5%, transparent));
+  transition: background 0.6s ease;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+.ambient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  background-image: 
+    repeating-linear-gradient(0deg, rgba(128, 232, 225, 0.08) 0, rgba(128, 232, 225, 0.08) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(128, 232, 225, 0.08) 0, rgba(128, 232, 225, 0.08) 1px, transparent 1px, transparent 32px);
+  mix-blend-mode: screen;
+  animation: blueprint-grid-fade 12s ease-in-out infinite alternate;
+}
+
+.ambient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.45;
+  background-image: 
+    radial-gradient(circle at 16% 12%, rgba(255, 255, 255, 0.4) 0.18rem, transparent 0.3rem),
+    radial-gradient(circle at 72% 24%, rgba(128, 232, 225, 0.35) 0.16rem, transparent 0.28rem),
+    radial-gradient(circle at 45% 80%, rgba(183, 245, 107, 0.3) 0.15rem, transparent 0.25rem),
+    radial-gradient(circle at 88% 68%, rgba(255, 255, 255, 0.25) 0.14rem, transparent 0.22rem);
+  filter: blur(1px);
+  mix-blend-mode: screen;
+  animation: blueprint-pulse 16s ease-in-out infinite;
+}
+
+/* Blueprint Line Scan Overlay */
+.blueprint-scan-line {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--accent), transparent);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+  animation: blueprint-scan 14s ease-in-out infinite;
+}
+
+/* Navbar active state */
+.navbar nav a.active {
+  color: var(--fg);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+/* Hero Entrance Animations */
+.hero-copy {
+  animation: hero-fade-in 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-orbit {
+  opacity: 0;
+  animation: hero-fade-in 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both, orbit-float 7s ease-in-out infinite 1.2s;
+  transform: translate(calc((var(--pointer-x) - 0.5) * -18px), calc((var(--pointer-y) - 0.5) * -18px));
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.orb-core {
+  animation: core-breathe 4s ease-in-out infinite;
+}
+
+.orbit-node {
+  animation: node-pulse 3.2s ease-in-out infinite;
+}
+
+.orbit-node.cse {
+  animation-delay: -1.1s;
+}
+
+.orbit-node.cyber {
+  animation-delay: -2.2s;
+}
+
+.beam {
+  animation: beam-sweep 5s linear infinite;
+}
+
+.b2 {
+  animation-delay: -2.5s;
+}
+
+.hero-foot {
+  animation: scroll-nudge 1.6s ease-in-out infinite;
+}
+
+/* Glass Panel Shimmer & Blueprint Lines */
+.glass-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-panel::before {
+  content: "";
+  position: absolute;
+  inset: -70% -35%;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.14) 49%, transparent 56%);
+  transform: translateX(-65%) rotate(8deg);
+  transition: transform 0.85s ease;
+}
+
+.glass-panel:hover::before {
+  transform: translateX(65%) rotate(8deg);
+}
+
+/* Scroll Reveal & Stagger Fading */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(32px);
+  filter: blur(8px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), filter 0.75s ease;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Stagger delays for grid items */
+.reveal-stagger-item {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.is-visible .reveal-stagger-item,
+.reveal-stagger-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stagger-1 { transition-delay: 0.08s; }
+.stagger-2 { transition-delay: 0.16s; }
+.stagger-3 { transition-delay: 0.24s; }
+.stagger-4 { transition-delay: 0.32s; }
+.stagger-5 { transition-delay: 0.40s; }
+
+/* Filter Crossfade */
+.skills-grid-container {
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.skills-grid-container.filtering-out {
+  opacity: 0;
+  transform: scale(0.98) translateY(6px);
+}
+
+.skills-grid-container.filtering-in {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Status Indicator Pulse */
+.status i {
+  animation: status-pulse 2s ease-in-out infinite;
+}
+
+/* Filter Button Transition */
+.filters button {
+  transition: transform 0.22s ease, background 0.22s ease, color 0.22s ease, border-color 0.22s ease;
+}
+
+.filters button:hover {
+  transform: translateY(-2px);
+}
+
+/* Interactive Text Marker */
+.about-copy p,
+.project-card p:not(.tag),
+.ai-direction > div > p,
+.roadmap p,
+.contact-layout > p,
+.modal p:not(.eyebrow) {
+  position: relative;
+  cursor: default;
+  transition: color 0.28s ease, transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), text-shadow 0.32s ease;
+}
+
+.about-copy p:hover,
+.project-card p:not(.tag):hover,
+.ai-direction > div > p:hover,
+.roadmap p:hover,
+.contact-layout > p:hover,
+.modal p:not(.eyebrow):hover {
+  color: var(--fg);
+  transform: translateX(7px);
+  text-shadow: 0 0 20px color-mix(in srgb, var(--cyan) 23%, transparent);
+}
+
+.about-copy p:hover::before,
+.project-card p:not(.tag):hover::before,
+.ai-direction > div > p:hover::before,
+.roadmap p:hover::before,
+.contact-layout > p:hover::before,
+.modal p:hover::before {
+  content: "";
+  position: absolute;
+  left: -11px;
+  top: 0.25em;
+  bottom: 0.25em;
+  width: 2px;
+  border-radius: 3px;
+  background: linear-gradient(var(--cyan), var(--accent));
+  box-shadow: 0 0 12px var(--cyan);
+  animation: text-marker 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Keyframes */
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes blueprint-grid-fade {
+  0% { opacity: 0.12; }
+  50% { opacity: 0.24; }
+  100% { opacity: 0.16; }
+}
+
+@keyframes blueprint-scan {
+  0% { top: 0%; opacity: 0; }
+  15% { opacity: 0.4; }
+  85% { opacity: 0.4; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@keyframes orbit-float {
+  50% {
+    margin-top: -12px;
+  }
+}
+
+@keyframes core-breathe {
+  50% {
+    box-shadow: inset 0 1px color-mix(in srgb, var(--fg) 34%, transparent), 0 0 84px color-mix(in srgb, var(--accent) 26%, transparent);
+    transform: translate(-50%, -50%) scale(1.035);
+  }
+}
+
+@keyframes node-pulse {
+  50% {
+    box-shadow: 0 0 22px color-mix(in srgb, var(--cyan) 28%, transparent);
+    border-color: var(--cyan);
+  }
+}
+
+@keyframes beam-sweep {
+  to {
+    transform: rotate(365deg);
+  }
+}
+
+@keyframes scroll-nudge {
+  50% {
+    transform: translateY(5px);
+    color: var(--accent);
+  }
+}
+
+@keyframes panel-settle {
+  from {
+    opacity: 0;
+    transform: translateY(17px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes status-pulse {
+  50% {
+    box-shadow: 0 0 10px var(--accent);
+    transform: scale(1.4);
+  }
+}
+
+@keyframes text-marker {
+  from {
+    opacity: 0;
+    transform: scaleY(0.2);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes blueprint-pulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.58;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes modal-backdrop-fade {
+  from { opacity: 0; backdrop-filter: blur(0px); }
+  to { opacity: 1; backdrop-filter: blur(7px); }
+}
+
+@keyframes modal-pop-in {
+  from { opacity: 0; transform: scale(0.94) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-backdrop {
+  animation: modal-backdrop-fade 0.3s ease-out both;
+}
+
+.modal {
+  animation: modal-pop-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (max-width: 800px) {
+  .hero-orbit {
+    transform: scale(0.85);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal-on-scroll,
+  .reveal-stagger-item {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
