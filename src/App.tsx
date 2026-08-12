@@ -36,6 +36,68 @@ function BlueprintCorners() {
   )
 }
 
+function InteractiveHeroTitle() {
+  const phrases = [
+    { main: 'Arpit ', highlight: 'Rana' },
+    { main: 'Tech Cyber-AI ', highlight: 'Enthusiast' }
+  ]
+  const [index, setIndex] = useState(0)
+  const [subIndex, setSubIndex] = useState(0)
+  const [reverse, setReverse] = useState(false)
+
+  const currentPhrase = phrases[index]
+  const fullText = `${currentPhrase.main}${currentPhrase.highlight}`
+
+  useEffect(() => {
+    if (subIndex === fullText.length + 1 && !reverse) {
+      const timer = setTimeout(() => setReverse(true), 2500)
+      return () => clearTimeout(timer)
+    }
+
+    if (subIndex === 0 && reverse) {
+      setReverse(false)
+      setIndex(prev => (prev + 1) % phrases.length)
+      return
+    }
+
+    const interval = setTimeout(() => {
+      setSubIndex(prev => prev + (reverse ? -1 : 1))
+    }, reverse ? 35 : 75)
+
+    return () => clearTimeout(interval)
+  }, [subIndex, reverse, fullText, phrases.length])
+
+  const handleClick = () => {
+    setReverse(true)
+  }
+
+  const currentText = fullText.substring(0, subIndex)
+  const mainLength = currentPhrase.main.length
+
+  let mainPart = ''
+  let highlightPart = ''
+
+  if (currentText.length <= mainLength) {
+    mainPart = currentText
+  } else {
+    mainPart = currentPhrase.main
+    highlightPart = currentText.substring(mainLength)
+  }
+
+  return (
+    <h1
+      className="interactive-title"
+      onClick={handleClick}
+      title="Click to toggle identity title"
+      style={{ cursor: 'pointer', userSelect: 'none' }}
+    >
+      <span>{mainPart}</span>
+      {highlightPart && <em>{highlightPart}</em>}
+      <span className="typing-cursor">|</span>
+    </h1>
+  )
+}
+
 export default function App() {
   const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem('theme') as Theme) || 'system')
   const [modal, setModal] = useState<Project | null>(null)
@@ -150,9 +212,7 @@ export default function App() {
           <BlueprintCorners />
           <div className="hero-copy">
             <p className="eyebrow">// DIGITAL IDENTITY · 01</p>
-            <h1>
-              Arpit <em>Rana.</em>
-            </h1>
+            <InteractiveHeroTitle />
             <p className="role">Computer Science Engineering Student</p>
             <p className="intro">
               Building, experimenting and learning at the intersection of{' '}
