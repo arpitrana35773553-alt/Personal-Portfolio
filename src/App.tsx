@@ -38,19 +38,19 @@ function BlueprintCorners() {
 
 function InteractiveHeroTitle() {
   const phrases = [
-    { main: 'Arpit ', highlight: 'Rana' },
-    { main: 'Tech Cyber-AI ', highlight: 'Enthusiast' }
+    { main: 'Arpit', highlight: 'Rana' },
+    { main: 'Tech Cyber-AI', highlight: 'Enthusiast' }
   ]
   const [index, setIndex] = useState(0)
   const [subIndex, setSubIndex] = useState(0)
   const [reverse, setReverse] = useState(false)
 
   const currentPhrase = phrases[index]
-  const fullText = `${currentPhrase.main}${currentPhrase.highlight}`
+  const fullText = `${currentPhrase.main} ${currentPhrase.highlight}`
 
   useEffect(() => {
     if (subIndex === fullText.length + 1 && !reverse) {
-      const timer = setTimeout(() => setReverse(true), 2500)
+      const timer = setTimeout(() => setReverse(true), 2600)
       return () => clearTimeout(timer)
     }
 
@@ -75,13 +75,15 @@ function InteractiveHeroTitle() {
   const mainLength = currentPhrase.main.length
 
   let mainPart = ''
+  let spacePart = false
   let highlightPart = ''
 
   if (currentText.length <= mainLength) {
     mainPart = currentText
   } else {
     mainPart = currentPhrase.main
-    highlightPart = currentText.substring(mainLength)
+    spacePart = true
+    highlightPart = currentText.substring(mainLength + 1)
   }
 
   return (
@@ -89,10 +91,10 @@ function InteractiveHeroTitle() {
       className="interactive-title"
       onClick={handleClick}
       title="Click to toggle identity title"
-      style={{ cursor: 'pointer', userSelect: 'none' }}
     >
-      <span>{mainPart}</span>
-      {highlightPart && <em>{highlightPart}</em>}
+      <span className="title-main">{mainPart}</span>
+      {spacePart && <span className="title-gap">&nbsp;</span>}
+      {highlightPart && <em className="title-highlight">{highlightPart}</em>}
       <span className="typing-cursor">|</span>
     </h1>
   )
