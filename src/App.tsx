@@ -142,7 +142,6 @@ export default function App() {
     <>
       <div className="progress" />
       <div className="ambient" />
-      <div className="blueprint-scan-line" />
       <Navbar theme={theme} setTheme={setTheme} activeSection={activeSection} />
 
       <main className={pageLoaded ? 'page-loaded' : ''}>

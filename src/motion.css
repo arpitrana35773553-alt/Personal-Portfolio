@@ -43,19 +43,6 @@
   animation: blueprint-pulse 16s ease-in-out infinite;
 }
 
-/* Blueprint Line Scan Overlay */
-.blueprint-scan-line {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--cyan), var(--accent), transparent);
-  opacity: 0.35;
-  pointer-events: none;
-  z-index: 0;
-  animation: blueprint-scan 14s ease-in-out infinite;
-}
 
 /* Navbar active state */
 .navbar nav a.active {
@@ -246,12 +233,6 @@
   100% { opacity: 0.16; }
 }
 
-@keyframes blueprint-scan {
-  0% { top: 0%; opacity: 0; }
-  15% { opacity: 0.4; }
-  85% { opacity: 0.4; }
-  100% { top: 100%; opacity: 0; }
-}
 
 @keyframes orbit-float {
   50% {
