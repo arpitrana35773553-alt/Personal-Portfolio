@@ -43,6 +43,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 110px;
 }
 
 body {
@@ -203,6 +204,7 @@ nav a:hover {
   width: min(1280px, 100% - 11vw);
   margin: auto;
   position: relative;
+  scroll-margin-top: 110px;
 }
 
 .hero {
@@ -437,11 +439,12 @@ h2 em {
 
 .section-title {
   margin-bottom: 46px;
+  padding-top: 12px;
 }
 
 .section-title h2 {
-  font-size: clamp(44px, 6.5vw, 78px);
-  line-height: 0.95;
+  font-size: clamp(40px, 6vw, 76px);
+  line-height: 1.08;
 }
 
 .about {
