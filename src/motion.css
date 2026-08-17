@@ -380,165 +380,48 @@
 }
 
 /* ══════════════════════════════════════════════════════
-   LIGHT MODE: CYBER DE-REZ & FRAGMENT DISSOLVE
-   Cyber matrix elements evaporate into classic daylight
+   LIGHT MODE: CLEAN PROFESSIONAL AMBIENT BLOOM
+   Transparent, smooth & elegant daylight dissolve
    ══════════════════════════════════════════════════════ */
 
-.cyber-derez-dissolve-overlay {
+.light-mode-dissolve-overlay {
   position: fixed;
   inset: 0;
   z-index: 99999;
   pointer-events: none;
-  overflow: hidden;
+  background: rgba(245, 242, 235, 0.22);
+  backdrop-filter: blur(1.5px);
   opacity: 0;
-  transition: opacity 0.25s ease;
+  animation: light-dissolve-fade 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.cyber-derez-dissolve-overlay.active {
-  opacity: 1;
-}
-
-/* ── Gentle Golden Daylight Wash ── */
-.derez-ambient-wash {
+.light-dissolve-bloom {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 45vh;
   background: radial-gradient(
-    ellipse at 50% 20%,
-    rgba(255, 255, 255, 0.6) 0%,
-    rgba(245, 242, 235, 0.4) 40%,
-    rgba(179, 131, 95, 0.08) 80%,
-    transparent 100%
+    ellipse at top,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(179, 131, 95, 0.06) 50%,
+    transparent 80%
   );
-  animation: derez-wash-fade 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes derez-wash-fade {
-  0% { opacity: 0; transform: scale(1.04); }
-  25%, 65% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(0.98); }
-}
-
-/* ── Fracturing Circuit Lines Dissolving Away ── */
-.derez-circuit-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 3;
-}
-
-.derez-line,
-.derez-path {
-  fill: none;
-  stroke: rgba(0, 240, 255, 0.6);
-  stroke-width: 1.5;
-  stroke-dasharray: 8 16;
-  animation: derez-circuit-burn 0.95s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
-}
-
-.derez-path {
-  stroke-width: 2;
-  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.5));
-}
-
-.line-2 { animation-delay: 0.06s; }
-.line-3 { animation-delay: 0.12s; }
-.line-v1 { animation-delay: 0.04s; }
-.line-v2 { animation-delay: 0.08s; }
-.line-v3 { animation-delay: 0.14s; }
-.p1 { animation-delay: 0.05s; }
-.p2 { animation-delay: 0.1s; }
-
-@keyframes derez-circuit-burn {
+@keyframes light-dissolve-fade {
   0% {
-    opacity: 0.85;
-    stroke: rgba(0, 240, 255, 0.8);
-    stroke-dashoffset: 0;
+    opacity: 0;
   }
-  40% {
-    opacity: 0.7;
-    stroke: #e0a97b;
-    stroke-dasharray: 4 28;
-    filter: drop-shadow(0 0 8px #ffd700);
+  35% {
+    opacity: 1;
   }
   100% {
     opacity: 0;
-    stroke: #b3835f;
-    stroke-dashoffset: 120;
-    stroke-dasharray: 1 40;
-    filter: none;
   }
 }
 
-/* ── Dispersing Cyber Particle Fragments Layer ── */
-.derez-fragments-layer {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-}
-
-.derez-fragment {
-  position: absolute;
-  font: 700 11px var(--font-downey);
-  letter-spacing: 1px;
-  color: #00f0ff;
-  opacity: 0;
-  animation: fragment-drift-dissolve 0.95s cubic-bezier(0.12, 0.8, 0.32, 1) forwards;
-  pointer-events: none;
-  text-shadow: 0 0 6px rgba(0, 240, 255, 0.7);
-}
-
-.fragment-hex {
-  width: 10px;
-  height: 10px;
-  border: 1.5px solid #00f0ff;
-  border-radius: 2px;
-  transform: rotate(45deg);
-  display: block;
-}
-
-.fragment-shard {
-  width: 14px;
-  height: 2px;
-  background: #00ffcc;
-  box-shadow: 0 0 8px #00ffcc;
-  display: block;
-}
-
-.fragment-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 0 6px #00f0ff;
-  display: block;
-}
-
-.fragment-cross {
-  font-size: 14px;
-  line-height: 1;
-}
-
-@keyframes fragment-drift-dissolve {
-  0% {
-    opacity: 0;
-    transform: translate(0, 0) scale(0.6);
-  }
-  20% {
-    opacity: 0.95;
-    color: #00f0ff;
-  }
-  60% {
-    opacity: 0.75;
-    color: #e0a97b;
-    text-shadow: 0 0 8px rgba(224, 169, 123, 0.8);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(var(--drift-x), var(--drift-y)) scale(1.3);
-    filter: blur(3px);
-  }
-}
 
 
 /* ══════════════════════════════════════════════════════
