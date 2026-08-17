@@ -143,6 +143,54 @@
 .stagger-4 { transition-delay: 0.32s; }
 .stagger-5 { transition-delay: 0.40s; }
 
+/* ═══════════════════════════════════════
+   SCROLL-DRIVEN LETTER STRETCH ANIMATION
+   Text compresses in, then stretches out
+   as it scrolls into view — cinematic feel
+   ═══════════════════════════════════════ */
+
+/* Applied to section heading wrappers via JS */
+.scroll-stretch-text {
+  display: inline-block;
+  overflow: hidden;
+  animation: none;
+}
+
+/* When section becomes visible, trigger stretch */
+.scroll-stretch-text.stretch-in {
+  animation: letter-stretch-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Each word-span inside heading also gets a stagger */
+.scroll-stretch-word {
+  display: inline-block;
+  opacity: 0;
+  transform: scaleX(0.6) translateY(12px);
+  letter-spacing: -0.08em;
+  filter: blur(4px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    letter-spacing 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.6s ease;
+}
+
+.scroll-stretch-word.stretch-visible {
+  opacity: 1;
+  transform: scaleX(1) translateY(0);
+  letter-spacing: inherit;
+  filter: blur(0);
+}
+
+/* Stagger each word */
+.scroll-stretch-word:nth-child(1) { transition-delay: 0.00s; }
+.scroll-stretch-word:nth-child(2) { transition-delay: 0.08s; }
+.scroll-stretch-word:nth-child(3) { transition-delay: 0.16s; }
+.scroll-stretch-word:nth-child(4) { transition-delay: 0.24s; }
+.scroll-stretch-word:nth-child(5) { transition-delay: 0.32s; }
+.scroll-stretch-word:nth-child(6) { transition-delay: 0.40s; }
+.scroll-stretch-word:nth-child(7) { transition-delay: 0.48s; }
+
 /* Filter Crossfade */
 .skills-grid-container {
   transition: opacity 0.28s ease, transform 0.28s ease;
@@ -331,6 +379,365 @@
   }
 }
 
+/* ══════════════════════════════════════════════════════
+   LIGHT MODE: ELEGANT SILK DISSOLVE TRANSITION
+   Subtle ambient luminance bloom (smooth & professional)
+   ══════════════════════════════════════════════════════ */
+
+.light-mode-dissolve-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  background: rgba(245, 242, 235, 0.25);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  animation: light-dissolve-fade 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.light-dissolve-bloom {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 40vh;
+  background: radial-gradient(
+    ellipse at top,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(179, 131, 95, 0.08) 50%,
+    transparent 80%
+  );
+}
+
+@keyframes light-dissolve-fade {
+  0% {
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   DARK MODE: MARVEL J.A.R.V.I.S. ARC REACTOR ACTIVATION
+   Pure Holographic Core · Rotating HUD Rings
+   ══════════════════════════════════════════════════════ */
+
+.jarvis-transformation-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.jarvis-transformation-overlay.active {
+  opacity: 1;
+}
+
+/* ── Anamorphic Horizontal Laser Flare Streak ── */
+.anamorphic-flare-streak {
+  position: absolute;
+  left: -20vw;
+  right: -20vw;
+  height: 3px;
+  top: -20px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 240, 255, 0.2) 20%,
+    #00ffff 45%,
+    #ffffff 50%,
+    #00ffff 55%,
+    rgba(0, 240, 255, 0.2) 80%,
+    transparent 100%
+  );
+  box-shadow: 0 0 16px #00f0ff, 0 0 40px #00ffcc, 0 0 80px rgba(0, 240, 255, 0.9);
+  animation: flare-sweep 1.85s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  z-index: 9;
+}
+
+.jarvis-light .anamorphic-flare-streak {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(179, 131, 95, 0.2) 20%,
+    #ffd700 45%,
+    #ffffff 50%,
+    #ffd700 55%,
+    rgba(179, 131, 95, 0.2) 80%,
+    transparent 100%
+  );
+  box-shadow: 0 0 16px #b3835f, 0 0 40px #ffd700, 0 0 80px rgba(255, 215, 0, 0.9);
+}
+
+@keyframes flare-sweep {
+  0% { top: -20px; opacity: 0; transform: scaleX(0.7); }
+  15%, 85% { opacity: 1; transform: scaleX(1); }
+  100% { top: 105vh; opacity: 0; transform: scaleX(0.9); }
+}
+
+/* ── Vector Graph & Blueprint Circuit Line Drawing ── */
+.scan-graph-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.circuit-line {
+  stroke: rgba(0, 240, 255, 0.25);
+  stroke-width: 1;
+  stroke-dasharray: 1920;
+  stroke-dashoffset: 1920;
+  animation: draw-circuit-line 1.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.jarvis-light .circuit-line {
+  stroke: rgba(179, 131, 95, 0.3);
+}
+
+.line-h-1 { animation-delay: 0.08s; }
+.line-h-2 { animation-delay: 0.22s; }
+.line-h-3 { animation-delay: 0.36s; }
+.line-v-1 { animation-delay: 0.12s; }
+.line-v-2 { animation-delay: 0.26s; }
+.line-v-3 { animation-delay: 0.40s; }
+
+.circuit-path-drawn {
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 3000;
+  animation: draw-circuit-path 1.75s cubic-bezier(0.2, 0.9, 0.3, 1) 0.15s forwards;
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.7));
+}
+
+.jarvis-light .circuit-path-drawn {
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7));
+}
+
+.branch-2 { animation-delay: 0.25s; }
+
+.circuit-node {
+  fill: #fff;
+  opacity: 0;
+  filter: drop-shadow(0 0 8px #00f0ff);
+  animation: node-flash 1.4s ease 0.45s forwards;
+}
+
+.jarvis-light .circuit-node {
+  filter: drop-shadow(0 0 8px #ffd700);
+}
+
+@keyframes draw-circuit-line {
+  0% { stroke-dashoffset: 1920; opacity: 0; }
+  20% { opacity: 1; }
+  85% { opacity: 0.8; stroke-dashoffset: 0; }
+  100% { opacity: 0; stroke-dashoffset: 0; }
+}
+
+@keyframes draw-circuit-path {
+  0% { stroke-dashoffset: 3000; opacity: 0; }
+  20% { opacity: 1; }
+  85% { opacity: 1; stroke-dashoffset: 0; }
+  100% { opacity: 0; stroke-dashoffset: 0; }
+}
+
+@keyframes node-flash {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.6); }
+}
+
+/* ── Central JARVIS Arc Reactor & Holographic Core ── */
+.jarvis-arc-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(340px, 45vw, 680px);
+  height: clamp(340px, 45vw, 680px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  animation: arc-stage-pop 1.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes arc-stage-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+    filter: blur(8px);
+  }
+  20%, 75% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.35);
+    filter: blur(12px);
+  }
+}
+
+.arc-core-glow {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, #00f0ff 45%, transparent 70%);
+  filter: blur(35px);
+  opacity: 0.85;
+  animation: core-glow-pulse 0.8s ease-in-out infinite alternate;
+}
+
+.jarvis-light .arc-core-glow {
+  background: radial-gradient(circle, #ffffff 0%, #ffd700 45%, transparent 70%);
+}
+
+@keyframes core-glow-pulse {
+  0% { transform: scale(0.85); opacity: 0.7; }
+  100% { transform: scale(1.2); opacity: 1; }
+}
+
+.arc-svg-rings {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.arc-ring {
+  fill: none;
+  stroke: #00f0ff;
+  stroke-width: 2;
+  transform-origin: 400px 400px;
+  filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.8));
+}
+
+.jarvis-light .arc-ring {
+  stroke: #ffd700;
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+}
+
+.ring-outer-cw {
+  stroke-width: 3;
+  animation: rotate-cw 4s linear infinite;
+}
+
+.ring-dial-ccw {
+  stroke-width: 1.5;
+  animation: rotate-ccw 6s linear infinite;
+}
+
+.ring-dashed {
+  stroke-width: 1.5;
+  animation: rotate-cw 8s linear infinite;
+}
+
+.ring-mid-cw {
+  stroke-width: 2.5;
+  animation: rotate-cw 3s linear infinite;
+}
+
+.ring-inner-ccw {
+  stroke-width: 2;
+  animation: rotate-ccw 2.5s linear infinite;
+}
+
+.arc-triangle {
+  fill: none;
+  stroke: #00f0ff;
+  stroke-width: 1.5;
+  transform-origin: 400px 400px;
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.9));
+}
+
+.jarvis-light .arc-triangle {
+  stroke: #ffd700;
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.9));
+}
+
+.tri-1 { animation: rotate-cw 5s linear infinite; }
+.tri-2 { animation: rotate-ccw 5s linear infinite; }
+
+.arc-crosshair {
+  stroke: rgba(0, 240, 255, 0.4);
+  stroke-width: 1;
+  stroke-dasharray: 8 6;
+}
+
+.jarvis-light .arc-crosshair {
+  stroke: rgba(179, 131, 95, 0.4);
+}
+
+.arc-core-inner {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 14px #00f0ff);
+}
+
+.jarvis-light .arc-core-inner {
+  filter: drop-shadow(0 0 14px #ffd700);
+}
+
+.arc-center-orb {
+  fill: #ffffff;
+  filter: drop-shadow(0 0 20px #00f0ff);
+  animation: orb-flare 0.6s ease-in-out infinite alternate;
+}
+
+.jarvis-light .arc-center-orb {
+  filter: drop-shadow(0 0 20px #ffd700);
+}
+
+@keyframes rotate-cw {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes rotate-ccw {
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes orb-flare {
+  0% { transform: scale(0.9); opacity: 0.9; }
+  100% { transform: scale(1.15); opacity: 1; }
+}
+
+/* ── Global Theme Switch Color Blending Transition ── */
+body,
+main,
+.navbar,
+.hero,
+.section,
+.glass-panel,
+.cert-futuristic-card,
+.project-card,
+.hero-badge,
+.hero-status,
+.blended-cyber-title,
+.hero-condensed-heading,
+.hero-service-item {
+  transition: background 0.7s cubic-bezier(0.2, 1, 0.3, 1),
+              background-color 0.7s cubic-bezier(0.2, 1, 0.3, 1),
+              color 0.5s ease,
+              border-color 0.55s ease,
+              box-shadow 0.65s ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -346,3 +753,4 @@
     filter: none !important;
   }
 }
+

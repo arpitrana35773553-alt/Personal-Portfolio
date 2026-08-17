@@ -6,3 +6,46 @@ export const projects: Project[] = [
   { id: 'hack', title: 'Hackathon Project', label: 'HACKATHON', description: 'Problem, team, solution and outcome will be documented here when details are available.', stack: ['To document'], learning: 'Future collaboration and applied problem solving.', status: 'Planned', details: ['Hackathon name, problem statement, team contribution, outcome, demo and repository are pending.'] }
 ]
 export const skills = { Programming: ['C', 'C++', 'Python', 'Java'], 'Web Development': ['HTML', 'CSS', 'JavaScript', 'React'], 'Computer Science': ['DSA', 'OOP', 'Problem Solving', 'Database Fundamentals'], Cybersecurity: ['Linux', 'Networking', 'Security Fundamentals'], AI: ['AI Fundamentals', 'Machine Learning', 'AI Tools'], Tools: ['Git', 'VS Code'] }
+
+export type Certificate = {
+  id: string
+  title: string
+  issuer: string
+  date: string
+  type: string
+  image?: string
+  pdfUrl?: string
+  credential?: string
+}
+
+export const certificates: Certificate[] = [
+  {
+    id: 'hackmanthan',
+    title: 'HackManthan 2025',
+    issuer: 'EventEye × GeeksForGeeks · LPU CSE',
+    date: '2025',
+    type: '24H HACKATHON',
+    image: '/Personal-Portfolio/cert-hackmanthan.jpg',
+    credential: 'Built innovative web solutions during an intensive 24-hour national hackathon at Lovely Professional University.',
+  },
+  {
+    id: 'webathon',
+    title: 'WEB-A-THON 2.0',
+    issuer: 'Student Organisation ARENA · LPU Punjab',
+    date: 'FEB 2026',
+    type: 'UNIVERSITY HACKATHON',
+    image: '/Personal-Portfolio/cert-webathon.jpg',
+    pdfUrl: '/Personal-Portfolio/academic-cert.pdf',
+    credential: 'Exhibited outstanding performance in design, web development, and strategic engineering during the 2-day hackathon.',
+  },
+  {
+    id: 'infosys_c',
+    title: 'Programming Using C',
+    issuer: 'Infosys Springboard · MOOC Certification',
+    date: 'SESSION 2025–2026',
+    type: 'COURSE ACCREDITATION',
+    image: '/Personal-Portfolio/cert-infosys.svg',
+    pdfUrl: '/Personal-Portfolio/MOOC certificate.pdf',
+    credential: 'Mastered procedural programming, data memory management, algorithm design, and core computational foundations in C.',
+  },
+]

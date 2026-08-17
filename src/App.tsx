@@ -2,7 +2,9 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { ArrowDown, ArrowUpRight, Code2, ExternalLink, Globe2, Mail, Send, Terminal, UsersRound, X } from 'lucide-react'
 import { Navbar, type Theme } from './components/Navbar'
 import { GlassButton, GlassPanel } from './components/ui'
-import { projects, skills, type Project } from './data/portfolio'
+import { ThemeScanOverlay } from './components/ThemeScanOverlay'
+import { projects, skills, certificates, type Project } from './data/portfolio'
+import arpitPhoto from './arpit-photo.png'
 import './styles.css'
 import './motion.css'
 
@@ -36,76 +38,15 @@ function BlueprintCorners() {
   )
 }
 
-function InteractiveHeroTitle() {
-  const phrases = [
-    { main: 'Arpit', highlight: 'Rana' },
-    { main: 'Tech Cyber-AI', highlight: 'Enthusiast' }
-  ]
-  const [index, setIndex] = useState(0)
-  const [subIndex, setSubIndex] = useState(0)
-  const [reverse, setReverse] = useState(false)
-
-  const currentPhrase = phrases[index]
-  const fullText = `${currentPhrase.main} ${currentPhrase.highlight}`
-
-  useEffect(() => {
-    if (subIndex === fullText.length + 1 && !reverse) {
-      const timer = setTimeout(() => setReverse(true), 2600)
-      return () => clearTimeout(timer)
-    }
-
-    if (subIndex === 0 && reverse) {
-      setReverse(false)
-      setIndex(prev => (prev + 1) % phrases.length)
-      return
-    }
-
-    const interval = setTimeout(() => {
-      setSubIndex(prev => prev + (reverse ? -1 : 1))
-    }, reverse ? 35 : 75)
-
-    return () => clearTimeout(interval)
-  }, [subIndex, reverse, fullText, phrases.length])
-
-  const handleClick = () => {
-    setReverse(true)
-  }
-
-  const currentText = fullText.substring(0, subIndex)
-  const mainLength = currentPhrase.main.length
-
-  let mainPart = ''
-  let spacePart = false
-  let highlightPart = ''
-
-  if (currentText.length <= mainLength) {
-    mainPart = currentText
-  } else {
-    mainPart = currentPhrase.main
-    spacePart = true
-    highlightPart = currentText.substring(mainLength + 1)
-  }
-
-  return (
-    <h1
-      className="interactive-title"
-      onClick={handleClick}
-      title="Click to toggle identity title"
-    >
-      <span className="title-main">{mainPart}</span>
-      {spacePart && <span className="title-gap">&nbsp;</span>}
-      {highlightPart && <em className="title-highlight">{highlightPart}</em>}
-      <span className="typing-cursor">|</span>
-    </h1>
-  )
-}
-
 export default function App() {
-  const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem('theme') as Theme) || 'system')
+  const [theme, setTheme] = useState<Theme>(() => {
+    const saved = localStorage.getItem('theme')
+    return (saved === 'dark' || saved === 'light') ? saved : 'light'
+  })
+  const [isThemeScanning, setIsThemeScanning] = useState(false)
   const [modal, setModal] = useState<Project | null>(null)
   const [filter, setFilter] = useState('All')
   const [filteringState, setFilteringState] = useState<'in' | 'out'>('in')
-  const [sending, setSending] = useState(false)
   const [message, setMessage] = useState('')
   const [activeSection, setActiveSection] = useState('home')
   const [pageLoaded, setPageLoaded] = useState(false)
@@ -118,6 +59,25 @@ export default function App() {
     document.documentElement.dataset.theme = theme
     localStorage.setItem('theme', theme)
   }, [theme])
+
+  const handleThemeChange = (newTheme: Theme) => {
+    if (newTheme === theme) return
+    setIsThemeScanning(true)
+    
+    // Check for native view transitions support
+    if ('startViewTransition' in document) {
+      ;(document as unknown as { startViewTransition: (cb: () => void) => void }).startViewTransition(() => {
+        setTheme(newTheme)
+      })
+    } else {
+      setTheme(newTheme)
+    }
+
+    const scanDuration = newTheme === 'dark' ? 1900 : 700
+    setTimeout(() => {
+      setIsThemeScanning(false)
+    }, scanDuration)
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -137,6 +97,35 @@ export default function App() {
     if (!reducedMotion) {
       sections.slice(1).forEach(section => section.classList.add('reveal-on-scroll'))
     }
+
+    // ── Scroll-Driven Letter Stretch ─────────────────────────────────────────
+    if (!reducedMotion) {
+      const stretchTargets = document.querySelectorAll<HTMLElement>(
+        '.section-title h2, .hero-heading'
+      )
+      stretchTargets.forEach(el => {
+        // Split text into word-spans, preserving spaces
+        const words = el.innerText.trim().split(/\s+/)
+        el.innerHTML = words
+          .map(w => `<span class="scroll-stretch-word">${w}</span>`)
+          .join(' ')
+      })
+
+      const stretchObserver = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const words = entry.target.querySelectorAll<HTMLElement>('.scroll-stretch-word')
+              words.forEach(word => word.classList.add('stretch-visible'))
+              stretchObserver.unobserve(entry.target)
+            }
+          })
+        },
+        { threshold: 0.25 }
+      )
+      stretchTargets.forEach(el => stretchObserver.observe(el))
+    }
+    // ─────────────────────────────────────────────────────────────────────────
 
     const observer = new IntersectionObserver(
       entries => {
@@ -182,79 +171,105 @@ export default function App() {
 
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setSending(true)
-    setMessage('Securely transmitting your message…')
-    try {
-      const r = await fetch('https://formspree.io/f/mvkpavrj', {
-        method: 'POST',
-        body: new FormData(e.currentTarget),
-        headers: { Accept: 'application/json' }
-      })
-      if (!r.ok) throw Error()
-      e.currentTarget.reset()
-      setMessage('Message received. I’ll get back to you soon.')
-    } catch {
-      setMessage('Unable to send right now. Please try again in a moment.')
-    } finally {
-      setSending(false)
-    }
+    const form = e.currentTarget
+    const data = new FormData(form)
+
+    const name    = (data.get('name')    as string) || ''
+    const email   = (data.get('email')   as string) || ''
+    const subject = (data.get('subject') as string) || 'Message from Portfolio'
+    const msg     = (data.get('message') as string) || ''
+
+    const body = encodeURIComponent(
+      `Hi Arpit,\n\nYou have a new message from your portfolio:\n\nName: ${name}\nEmail: ${email}\n\n${msg}\n`
+    )
+    const mailtoHref = `mailto:arpitrana35773553@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`
+
+    // Open the user's mail client
+    window.location.href = mailtoHref
+
+    form.reset()
+    setMessage('✓ Your mail client has opened with the message pre-filled. Hit Send!')
   }
 
   const categories = ['All', ...Object.keys(skills)]
 
   return (
     <>
+      <ThemeScanOverlay isScanning={isThemeScanning} targetTheme={theme} />
       <div className="progress" />
       <div className="ambient" />
-      <Navbar theme={theme} setTheme={setTheme} activeSection={activeSection} />
+      <Navbar theme={theme} setTheme={handleThemeChange} activeSection={activeSection} />
 
       <main className={pageLoaded ? 'page-loaded' : ''}>
         {/* HERO */}
-        <section id="home" className="hero">
-          <BlueprintCorners />
-          <div className="hero-copy">
-            <p className="eyebrow">// DIGITAL IDENTITY · 01</p>
-            <InteractiveHeroTitle />
-            <p className="role">Computer Science Engineering Student</p>
-            <p className="intro">
-              Building, experimenting and learning at the intersection of{' '}
-              <strong>Computer Science, Artificial Intelligence and Cybersecurity.</strong>
-            </p>
-            <div className="actions">
+        <section id="home" className="hero hero-grand-showcase">
+
+          {/* Far-left vertical year */}
+          <span className="hero-year">2026</span>
+
+          {/* ── LEFT PANEL ───────────────────── */}
+          <div className="hero-left-panel">
+            <span className="hero-badge">
+              <i className="badge-dot" /> FULL-STACK DEVELOPER
+            </span>
+
+            <h1 className="hero-condensed-heading">
+              BUILDING SECURE,<br />
+              SCALABLE &amp; IMPACTFUL<br />
+              <em className="heading-accent">DIGITAL EXPERIENCES.</em>
+            </h1>
+
+            <div className="actions hero-left-actions">
               <a className="glass-button primary" href="#projects">
-                Explore My Work <ArrowUpRight size={17} />
+                Explore My Work <ArrowUpRight size={15} />
               </a>
-              <a className="glass-button" href="#connect">
-                Connect With Me
-              </a>
+              <a className="glass-button" href="#connect">Connect</a>
+            </div>
+
+            <span className="hero-status">
+              <i className="status-dot" /> SYSTEM ONLINE
+            </span>
+          </div>
+
+          {/* ── CENTER PORTRAIT ──────────────── */}
+          <div className="hero-portrait-col">
+            <div className="portrait-ring" />
+            <div className="portrait-ambient-glow" />
+            <img src={arpitPhoto} alt="Arpit Rana" className="frameless-portrait-photo" />
+          </div>
+
+          {/* ── RIGHT PANEL ──────────────────── */}
+          <div className="hero-right-panel">
+            {[
+              { n: '01', title: 'DATA & AI',      desc: 'Turning data into meaningful insights',      icon: <ArrowUpRight size={18} /> },
+              { n: '02', title: 'FULL STACK',      desc: 'Building end-to-end web solutions',          icon: <Code2 size={18} /> },
+              { n: '03', title: 'CYBERSECURITY',   desc: 'Securing systems, protecting futures',       icon: <Terminal size={18} /> },
+              { n: '04', title: 'UI / UX DESIGN',  desc: 'Designing intuitive user experiences',       icon: <Globe2 size={18} /> },
+            ].map(({ n, title, desc, icon }) => (
+              <div key={n} className="hero-service-item">
+                <div className="svc-left">
+                  <span className="svc-num">{n}</span>
+                  <div>
+                    <strong className="svc-title">{title}</strong>
+                    <p className="svc-desc">{desc}</p>
+                  </div>
+                </div>
+                <span className="svc-icon">{icon}</span>
+              </div>
+            ))}
+
+            <div className="hero-scroll-hint">
+              SCROLL DOWN <ArrowDown size={13} />
             </div>
           </div>
 
-          <div className="hero-orbit" aria-label="AI, computer science and cybersecurity interconnected">
-            <BlueprintCorners />
-            <div className="orb-core">
-              <small>FUTURE</small>
-              <b>
-                AI ×<br />
-                SECURITY
-              </b>
-            </div>
-            <span className="orbit-node ai">AI</span>
-            <span className="orbit-node cse">CSE</span>
-            <span className="orbit-node cyber">CYBER</span>
-            <i className="beam b1" />
-            <i className="beam b2" />
-            <p>
-              HIMACHAL PRADESH, INDIA
-              <br />
-              <b>BUILD MODE: ACTIVE</b>
-            </p>
+          {/* ── CYBER × UI BOTTOM BAR ────────── */}
+          <div className="hero-cyber-bar">
+            <span className="blended-cyber-title">CYBER × UI</span>
           </div>
 
-          <div className="hero-foot">
-            SCROLL TO EXPLORE <ArrowDown size={15} />
-          </div>
         </section>
+
 
         {/* ABOUT */}
         <section id="about" className="section about">
@@ -482,6 +497,79 @@ export default function App() {
           </div>
         </section>
 
+        {/* CERTIFICATES */}
+        <section id="certificates" className="section certificates-section">
+          <SectionTitle eyebrow="08 · VERIFIED CREDENTIALS">
+            <h2>
+              Official <em>Accreditations</em> &amp; Hackathons.
+            </h2>
+          </SectionTitle>
+
+          <div className="certs-showcase-grid">
+            {certificates.map((cert, idx) => (
+              <div key={cert.id} className={`cert-futuristic-card reveal-stagger-item stagger-${idx + 1}`}>
+                <BlueprintCorners />
+
+                {/* Top Cyber Status Bar */}
+                <div className="cert-card-header">
+                  <span className="cert-cyber-id">// CERT_0{idx + 1}</span>
+                  <span className="cert-badge-type">{cert.type}</span>
+                </div>
+
+                {/* Extracted Certificate Image Showcase Stage */}
+                <a
+                  href={cert.pdfUrl ?? cert.image}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cert-media-stage"
+                  aria-label={`Open ${cert.title} certificate`}
+                >
+                  <div className="cert-scanline" />
+                  <img
+                    src={cert.image}
+                    alt={cert.title}
+                    className="cert-showcase-photo"
+                    loading="lazy"
+                  />
+                  <div className="cert-overlay-glow">
+                    <span className="cert-inspect-pill">
+                      Inspect Document <ExternalLink size={13} />
+                    </span>
+                  </div>
+                </a>
+
+                {/* Futuristic Info & Title Block Below */}
+                <div className="cert-info-block">
+                  <div className="cert-title-row">
+                    <h3 className="cert-futuristic-title">{cert.title}</h3>
+                    <span className="cert-year-tag">{cert.date}</span>
+                  </div>
+
+                  <p className="cert-issuer-brand">
+                    <span className="issuer-dot" /> {cert.issuer}
+                  </p>
+
+                  <p className="cert-summary-desc">{cert.credential}</p>
+
+                  <div className="cert-action-footer">
+                    <span className="cert-verify-status">
+                      <i className="verify-pulse" /> VERIFIED CREDENTIAL
+                    </span>
+                    <a
+                      href={cert.pdfUrl ?? cert.image}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="cert-open-action"
+                    >
+                      View Source <ExternalLink size={14} />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* CONNECT */}
         <section id="connect" className="section connect">
           <SectionTitle eyebrow="08 · ESTABLISH CONNECTION">
@@ -523,14 +611,8 @@ export default function App() {
                 Message
                 <textarea required name="message" placeholder="What would you like to talk about?" />
               </label>
-              <GlassButton className="primary" disabled={sending} type="submit">
-                {sending ? (
-                  'Sending…'
-                ) : (
-                  <>
-                    Establish Connection <Send size={16} />
-                  </>
-                )}
+              <GlassButton className="primary" type="submit">
+                Establish Connection <Send size={16} />
               </GlassButton>
               <p aria-live="polite" className="form-status">
                 {message}
